@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+
+import setuptools
+
+import problemdetails
+
+setuptools.setup(
+    name='tornado-problem-details',
+    version=problemdetails.version,
+    description='RFC-7807 Error documents for Tornado',
+    long_description=open('README.rst').read(),
+    author='Dave Shawley',
+    author_email='daveshawley@gmail.com',
+    url='https://github.com/dave-shawley/tornado-problem-details',
+    packages=['problemdetails'],
+    install_requires=[
+        'tornado>=6',
+    ],
+    extras_require={
+        'dev': [
+            'coverage==4.5.3',
+            'flake8==3.7.7',
+            'flake8-fixme==1.1.0',
+            'flake8-print==3.1.0',
+            'nose==1.3.7',
+            'readme-renderer==24.0',
+            'sphinx==2.0.0',
+            'twine==1.13.0',
+            'wheel==0.33.1',
+            'yapf==0.26.0',
+        ],
+    },
+    classifiers=[
+        'Development Status :: 1 - Planning',
+        'Environment :: Web Environment',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python :: 3',
+        'Topic :: Internet :: WWW/HTTP :: HTTP Servers',
+        'Topic :: Software Development :: Libraries',
+    ],
+)
