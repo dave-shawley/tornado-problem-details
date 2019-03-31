@@ -14,3 +14,12 @@ Reference
    replace ones that are here as you see fit.  The error writer
    uses this table to generate the default ``type`` link in
    responses.
+
+Release History
+===============
+
+`0.0.1`_ (31 Mar 2019)
+----------------------
+- Initial alpha release containing a very simple implementation.
+
+.. _0.0.1: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.0...0.0.1

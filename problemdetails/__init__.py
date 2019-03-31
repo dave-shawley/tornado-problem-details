@@ -9,5 +9,5 @@ except ImportError as error:  # pragma: no cover # noqa: 841
 
 __all__ = ['ErrorWriter', 'type_link_map', 'version_info', 'version']
 
-version_info = (0, 0, 0)
+version_info = (0, 0, 1)
 version = '.'.join(str(c) for c in version_info)
