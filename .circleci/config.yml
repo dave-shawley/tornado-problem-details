@@ -108,6 +108,7 @@ jobs:
           command: |
             . ~/workspace/env/bin/activate
             cp ~/workspace/.coverage .
+            pip install coveralls
             coveralls
 
   upload-docs:
