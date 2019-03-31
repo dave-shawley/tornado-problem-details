@@ -107,7 +107,7 @@ jobs:
           name: Upload coverage
           command: |
             . ~/workspace/env/bin/activate
-            cp ~/workspace/.coverage
+            cp ~/workspace/.coverage .
             coveralls
 
   upload-docs:
