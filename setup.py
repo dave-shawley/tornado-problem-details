@@ -29,6 +29,9 @@ setuptools.setup(
             'wheel==0.33.1',
             'yapf==0.26.0',
         ],
+        'docs': [
+            'sphinx==2.0.0',
+        ],
     },
     classifiers=[
         'Development Status :: 1 - Planning',
