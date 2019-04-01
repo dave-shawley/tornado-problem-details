@@ -21,12 +21,13 @@ Reference
 Release History
 ===============
 
-Next Release
-------------
+`0.0.2`_ (1 Apr 2019)
+---------------------
 - Add :exc:`problemdetails.Problem`
 
 `0.0.1`_ (31 Mar 2019)
 ----------------------
 - Initial alpha release containing a very simple implementation.
 
+.. _0.0.2: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.1...0.0.2
 .. _0.0.1: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.0...0.0.1
