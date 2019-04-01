@@ -5,6 +5,9 @@ Reference
 .. autoclass:: problemdetails.ErrorWriter
    :members:
 
+.. autoclass:: problemdetails.Problem
+   :members:
+
 .. data:: problemdetails.type_link_map
 
    Mapping of HTTP status code to *type* link.
@@ -17,6 +20,10 @@ Reference
 
 Release History
 ===============
+
+Next Release
+------------
+- Add :exc:`problemdetails.Problem`
 
 `0.0.1`_ (31 Mar 2019)
 ----------------------
