@@ -2,6 +2,8 @@ import json
 
 from tornado import web
 
+from problemdetails import Problem
+
 
 def _rfc_link(rfc_no, anchor=None):
     if anchor:
@@ -110,17 +112,25 @@ class ErrorWriter(web.RequestHandler):
         field.
 
         """
-        status_code = int(status_code)
-        body = {'status': status_code}
-        try:
-            body['type'] = type_link_map[status_code]
-        except KeyError:
-            pass
+        body = {}
+        if 'exc_info' in kwargs:
+            exc_value = kwargs['exc_info'][1]
+            if isinstance(exc_value, Problem):
+                body = exc_value.document.copy()
 
-        sentinel = object()
-        for kwarg in ('detail', 'instance', 'title', 'type'):
-            if kwargs.get(kwarg, sentinel) is not sentinel:
-                body[kwarg] = kwargs[kwarg]
+        if not body:
+            status_code = int(status_code)
+            body = {'status': status_code}
+            sentinel = object()
+            for kwarg in ('detail', 'instance', 'title', 'type'):
+                if kwargs.get(kwarg, sentinel) is not sentinel:
+                    body[kwarg] = kwargs[kwarg]
+
+        if 'type' not in body:
+            try:
+                body['type'] = type_link_map[status_code]
+            except KeyError:
+                pass
 
         self.set_header('Content-Type', 'application/problem+json')
         self.write(json.dumps(body).encode('utf-8'))

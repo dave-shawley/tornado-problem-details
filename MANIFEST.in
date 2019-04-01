@@ -1,3 +1,4 @@
 graft docs
+include example.py
 include LICENSE.txt
 include tests.py

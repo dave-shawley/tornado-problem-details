@@ -13,16 +13,33 @@ class Application(web.Application):
 
 class Handler(problemdetails.ErrorWriter, web.RequestHandler):
     def get(self):
-        status = int(self.get_query_argument('status', default='200'))
         sentinel = object()  # safely detect missing query params
-        kwargs = {}
-        for name in ('detail', 'instance', 'title', 'type'):
-            value = self.get_query_argument(name, sentinel)
-            if value is not sentinel:
-                if value.lower() == 'none':
-                    value = None
-                kwargs[name] = value
-        self.send_error(status, **kwargs)
+
+        status = int(self.get_query_argument('status', default='200'))
+        raise_error = self.get_query_argument('raise_error', default=sentinel)
+
+        if raise_error is not sentinel:
+            query_args = [
+                arg for arg in self.request.query_arguments.keys()
+                if arg not in ('raise_error', 'status')
+            ]
+            kwargs = {}
+            for name in query_args:
+                kwargs[name] = self.get_query_argument(name)
+                if kwargs[name].lower() == 'none':
+                    kwargs[name] = None
+                elif kwargs[name].startswith(('{', '[')):
+                    kwargs[name] = json.loads(kwargs[name])
+            raise problemdetails.Problem(status_code=status, **kwargs)
+        else:
+            kwargs = {}
+            for name in ('detail', 'instance', 'title', 'type'):
+                value = self.get_query_argument(name, sentinel)
+                if value is not sentinel:
+                    if value.lower() == 'none':
+                        value = None
+                    kwargs[name] = value
+            self.send_error(status, **kwargs)
 
 
 class ErrorWriterTests(testing.AsyncHTTPTestCase):
@@ -84,3 +101,18 @@ class ErrorWriterTests(testing.AsyncHTTPTestCase):
         response = self.send_query(status=500, instance=None)
         body = json.loads(response.body.decode('utf-8'))
         self.assertIsNone(body['instance'], repr(body))
+
+
+class ProblemTests(ErrorWriterTests):
+    def get_app(self):
+        return Application()
+
+    def send_query(self, **query):
+        query['raise_error'] = True
+        return self.fetch('/?{0}'.format(urllib.parse.urlencode(query)))
+
+    def test_that_custom_attributes_can_be_set(self):
+        response = self.send_query(
+            status=401, custom=json.dumps({'a': ['list']}))
+        body = json.loads(response.body.decode('utf-8'))
+        self.assertEqual(body['custom'], {'a': ['list']}, repr(body['custom']))

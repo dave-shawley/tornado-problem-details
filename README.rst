@@ -3,7 +3,9 @@ RFC-7807 implementation for Tornado
 |build| |coverage| |docs| |download| |license| |source|
 
 This library provides a version of ``tornado.web.RequestHandler.send_error``
-that speaks ``application/problem+json`` instead of HTML.
+that speaks ``application/problem+json`` instead of HTML.  The easiest
+way to use this library is to inherit from ``problemdetails.ErrorWriter``
+and call ``send_error()`` with additional parameters.
 
 .. code-block:: python
 
@@ -28,6 +30,26 @@ that speaks ``application/problem+json`` instead of HTML.
       "type": "https://tools.ietf.org/html/rfc7231#section-6.6.1"
    }
 
+As an alternative, you can raise a ``problemdetails.Problem`` instance and let
+the Tornado exception handling take care of eventually calling ``write_error``.
+The following snippet produces the same output as the previous example.
+
+.. code-block:: python
+
+   from tornado import web
+   import problemdetails
+
+
+   class MyHandler(problemdetails.ErrorWriter, web.RequestHandler):
+      def get(self):
+         if not self.do_something_hard():
+            raise problemdetails.Problem(status_code=500,
+                                         title='Failed to do_something_hard')
+
+The ``problemdetails.Problem`` instance passes all of the keyword parameters
+through in the resulting message so it is very easy to add fields.  The
+interface of ``tornado.web.RequestHandler.send_error`` is less expressive
+since keyword parameters may be swallowed by intervening code.
 
 .. |build| image:: https://img.shields.io/circleci/project/github/dave-shawley/tornado-problem-details/master.svg?style=social
    :target: https://circleci.com/gh/dave-shawley/tornado-problem-details/tree/master
