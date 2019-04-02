@@ -21,6 +21,10 @@ Reference
 Release History
 ===============
 
+`0.0.3`_ (2 Apr 2019)
+---------------------
+- Made compatible with Python 2.7, Tornado 4.4, Tornado 4.5, & Tornado 5.
+
 `0.0.2`_ (1 Apr 2019)
 ---------------------
 - Add :exc:`problemdetails.Problem`

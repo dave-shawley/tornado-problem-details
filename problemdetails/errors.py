@@ -1,4 +1,4 @@
-from tornado import web
+from tornado import httputil, web
 
 
 class Problem(web.HTTPError):
@@ -22,6 +22,8 @@ class Problem(web.HTTPError):
     """
 
     def __init__(self, status_code, *args, **kwargs):
-        super().__init__(status_code, *args, **kwargs)
+        if status_code not in httputil.responses:
+            kwargs.setdefault('reason', 'Abnormal Status')
+        super(Problem, self).__init__(status_code, *args, **kwargs)
         self.document = kwargs
         self.document['status'] = status_code

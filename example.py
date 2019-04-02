@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 
@@ -27,8 +26,8 @@ class HttpBinHandler(problemdetails.ErrorWriter, web.RequestHandler):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(levelname)1.1s - %(name)s: %(message)s')
+    logging.basicConfig(
+        level=logging.DEBUG, format='%(levelname)1.1s - %(name)s: %(message)s')
     app = web.Application([web.url('/', HttpBinHandler)], debug=True)
     app.listen(int(os.environ.get('PORT', '8000')))
     iol = ioloop.IOLoop.current()
