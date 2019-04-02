@@ -1,14 +1,17 @@
 import json
-import urllib.parse
+try:
+    from urllib.parse import urlencode
+except ImportError:  # pragma: no cover
+    from urllib import urlencode
 
-from tornado import testing, web
+from tornado import httputil, testing, web
 
 import problemdetails.handlers
 
 
 class Application(web.Application):
     def __init__(self, **settings):
-        super().__init__([web.url('/', Handler)], settings)
+        super(Application, self).__init__([web.url('/', Handler)], settings)
 
 
 class Handler(problemdetails.ErrorWriter, web.RequestHandler):
@@ -39,6 +42,8 @@ class Handler(problemdetails.ErrorWriter, web.RequestHandler):
                     if value.lower() == 'none':
                         value = None
                     kwargs[name] = value
+            if status not in httputil.responses:
+                kwargs['reason'] = 'Abnormal Status'
             self.send_error(status, **kwargs)
 
 
@@ -47,7 +52,7 @@ class ErrorWriterTests(testing.AsyncHTTPTestCase):
         return Application()
 
     def send_query(self, **query):
-        return self.fetch('/?{0}'.format(urllib.parse.urlencode(query)))
+        return self.fetch('/?{0}'.format(urlencode(query)))
 
     def test_that_send_error_sets_content_type(self):
         response = self.send_query(status=500)
@@ -109,10 +114,15 @@ class ProblemTests(ErrorWriterTests):
 
     def send_query(self, **query):
         query['raise_error'] = True
-        return self.fetch('/?{0}'.format(urllib.parse.urlencode(query)))
+        return self.fetch('/?{0}'.format(urlencode(query)))
 
     def test_that_custom_attributes_can_be_set(self):
         response = self.send_query(
             status=401, custom=json.dumps({'a': ['list']}))
         body = json.loads(response.body.decode('utf-8'))
         self.assertEqual(body['custom'], {'a': ['list']}, repr(body['custom']))
+
+    def test_that_http_reason_added_for_nonstandard_response_codes(self):
+        response = self.send_query(status=600)
+        self.assertEqual(response.code, 600)
+        self.assertEqual(response.reason, 'Abnormal Status')
