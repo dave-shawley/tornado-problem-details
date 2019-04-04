@@ -6,7 +6,8 @@ except ImportError:  # pragma: no cover
 
 from tornado import httputil, testing, web
 
-import problemdetails.handlers
+from problemdetails import handlers
+import problemdetails
 
 
 class Application(web.Application):
@@ -48,6 +49,16 @@ class Handler(problemdetails.ErrorWriter, web.RequestHandler):
 
 
 class ErrorWriterTests(testing.AsyncHTTPTestCase):
+    def setUp(self):
+        super(ErrorWriterTests, self).setUp()
+        self._original_content_type = (
+            handlers.ErrorWriter.PROBLEM_DETAILS_MIME_TYPE)
+
+    def tearDown(self):
+        super(ErrorWriterTests, self).tearDown()
+        handlers.ErrorWriter.PROBLEM_DETAILS_MIME_TYPE = (
+            self._original_content_type)
+
     def get_app(self):
         return Application()
 
@@ -69,7 +80,7 @@ class ErrorWriterTests(testing.AsyncHTTPTestCase):
         response = self.send_query(status=500)
         body = json.loads(response.body.decode('utf-8'))
         self.assertEqual(body['type'],
-                         problemdetails.handlers.type_link_map[response.code])
+                         handlers.type_link_map[response.code])
         self.assertEqual(body['type'],
                          'https://tools.ietf.org/html/rfc7231#section-6.6.1')
 
@@ -106,6 +117,11 @@ class ErrorWriterTests(testing.AsyncHTTPTestCase):
         response = self.send_query(status=500, instance=None)
         body = json.loads(response.body.decode('utf-8'))
         self.assertIsNone(body['instance'], repr(body))
+
+    def test_that_content_type_can_be_set(self):
+        handlers.ErrorWriter.PROBLEM_DETAILS_MIME_TYPE = 'application/json'
+        response = self.send_query()
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
 
 
 class ProblemTests(ErrorWriterTests):

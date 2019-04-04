@@ -70,6 +70,10 @@ Reference
 Release History
 ===============
 
+`Next Release`_
+---------------
+- Make content type configurable.
+
 `0.0.4`_ (2 Apr 2019)
 ---------------------
 - Made compatible with Python 2.7, Tornado 4.4, Tornado 4.5, & Tornado 5.
@@ -82,6 +86,7 @@ Release History
 ----------------------
 - Initial alpha release containing a very simple implementation.
 
+.. _Next Release: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.4...master
 .. _0.0.4: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.2...0.0.4
 .. _0.0.2: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.1...0.0.2
 .. _0.0.1: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.0...0.0.1

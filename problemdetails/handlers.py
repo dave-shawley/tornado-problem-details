@@ -91,9 +91,22 @@ class ErrorWriter(web.RequestHandler):
     Include this class in the base class list to return errors as
     `application/problem+json`_ documents instead of HTML.
 
+    .. attribute:: PROBLEM_DETAILS_MIME_TYPE
+
+       This class-level attribute controls the content type used by
+       `write_error`.  Due to the way that `write_error` is called,
+       it is necessary to configure this.  Setting the content type
+       header before calling :meth:`~tornado.web.RequestHandler.send_error`
+       DOES NOT work as expected.
+
+       If you need to change the response content type, change this
+       attribute at the class-level.
+
     .. _application/problem+json: https://tools.ietf.org/html/rfc7807
 
     """
+
+    PROBLEM_DETAILS_MIME_TYPE = "application/problem+json"
 
     def write_error(self, status_code, **kwargs):
         """Render *application/problem+json* documents instead of HTML.
@@ -134,5 +147,5 @@ class ErrorWriter(web.RequestHandler):
             except KeyError:
                 pass
 
-        self.set_header('Content-Type', 'application/problem+json')
+        self.set_header('Content-Type', self.PROBLEM_DETAILS_MIME_TYPE)
         self.write(json.dumps(body).encode('utf-8'))
