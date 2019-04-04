@@ -126,3 +126,13 @@ class ProblemTests(ErrorWriterTests):
         response = self.send_query(status=600)
         self.assertEqual(response.code, 600)
         self.assertEqual(response.reason, 'Abnormal Status')
+
+    def test_that_reason_param_is_dropped_from_body(self):
+        response = self.send_query(status=401, reason='whatever')
+        body = json.loads(response.body.decode('utf-8'))
+        self.assertNotIn('reason', body)
+
+    def test_that_log_message_param_is_dropped_from_body(self):
+        response = self.send_query(status=401, log_message='whatever')
+        body = json.loads(response.body.decode('utf-8'))
+        self.assertNotIn('log_message', body)
