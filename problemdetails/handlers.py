@@ -28,6 +28,7 @@ type_link_map = {
     301: _rfc_link(7231, 'section-6.4.2'),
     302: _rfc_link(7231, 'section-6.4.3'),
     303: _rfc_link(7231, 'section-6.4.4'),
+    304: _rfc_link(7232, 'section-4.1'),
     305: _rfc_link(7231, 'section-6.4.5'),
     306: _rfc_link(7231, 'section-6.4.6'),
     307: _rfc_link(7231, 'section-6.4.7'),
@@ -50,6 +51,7 @@ type_link_map = {
     415: _rfc_link(7231, 'section-6.5.13'),
     416: _rfc_link(7233, 'section-4.4'),
     417: _rfc_link(7231, 'section-6.5.14'),
+    418: _rfc_link(2324, 'section-2.3.2'),
     421: _rfc_link(7540, 'section-9.1.2'),
     422: _rfc_link(4918),
     423: _rfc_link(4918),
@@ -89,9 +91,22 @@ class ErrorWriter(web.RequestHandler):
     Include this class in the base class list to return errors as
     `application/problem+json`_ documents instead of HTML.
 
+    .. attribute:: PROBLEM_DETAILS_MIME_TYPE
+
+       This class-level attribute controls the content type used by
+       `write_error`.  Due to the way that `write_error` is called,
+       it is necessary to configure this.  Setting the content type
+       header before calling :meth:`~tornado.web.RequestHandler.send_error`
+       DOES NOT work as expected.
+
+       If you need to change the response content type, change this
+       attribute at the class-level.
+
     .. _application/problem+json: https://tools.ietf.org/html/rfc7807
 
     """
+
+    PROBLEM_DETAILS_MIME_TYPE = "application/problem+json"
 
     def write_error(self, status_code, **kwargs):
         """Render *application/problem+json* documents instead of HTML.
@@ -132,5 +147,5 @@ class ErrorWriter(web.RequestHandler):
             except KeyError:
                 pass
 
-        self.set_header('Content-Type', 'application/problem+json')
+        self.set_header('Content-Type', self.PROBLEM_DETAILS_MIME_TYPE)
         self.write(json.dumps(body).encode('utf-8'))

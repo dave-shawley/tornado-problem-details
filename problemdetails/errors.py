@@ -5,6 +5,13 @@ class Problem(web.HTTPError):
     """An exception that will be translated into a json document.
 
     :param int status_code: HTTP status code to return
+    :param str log_message: optional log message that is passed
+        to the :class:`tornado.web.HTTPError` initializer
+    :param args: parameters that are passed to `log_message` in
+        the :class:`~tornado.web.HTTPError` initializer.
+    :keyword str reason: optional reason phrase to use in the
+        HTTP response line.  *This value is NOT included in the
+        response document*.
     :param kwargs: additional keyword parameters are included in
         the response document
 
@@ -21,9 +28,12 @@ class Problem(web.HTTPError):
 
     """
 
-    def __init__(self, status_code, *args, **kwargs):
+    def __init__(self, status_code, log_message=None, *args, **kwargs):
         if status_code not in httputil.responses:
             kwargs.setdefault('reason', 'Abnormal Status')
-        super(Problem, self).__init__(status_code, *args, **kwargs)
+        super(Problem, self).__init__(status_code, log_message, *args,
+                                      **kwargs)
         self.document = kwargs
         self.document['status'] = status_code
+        self.document.pop('reason', None)
+        self.document.pop('log_message', None)
