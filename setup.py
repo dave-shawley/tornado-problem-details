@@ -23,6 +23,7 @@ setuptools.setup(
             'flake8-fixme==1.1.0',
             'flake8-print==3.1.0',
             'nose==1.3.7',
+            'python-docs-theme==2018.7',
             'readme-renderer==24.0',
             'sphinx==2.0.0',
             'tox==3.8.4',
@@ -31,6 +32,7 @@ setuptools.setup(
             'yapf==0.26.0',
         ],
         'docs': [
+            'python-docs-theme==2018.7',
             'sphinx==2.0.0',
         ],
     },
