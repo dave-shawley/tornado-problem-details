@@ -1,6 +1,10 @@
 Release History
 ===============
 
+`Next Release`_
+---------------
+- Make json encoder configurable.
+
 `0.0.5`_ (4 Apr 2019)
 ---------------------
 - Make content type configurable.
