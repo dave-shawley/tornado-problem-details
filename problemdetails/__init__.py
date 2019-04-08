@@ -16,5 +16,5 @@ __all__ = [
     'ErrorWriter', 'Problem', 'type_link_map', 'version_info', 'version'
 ]
 
-version_info = (0, 0, 5)
+version_info = (0, 0, 6)
 version = '.'.join(str(c) for c in version_info)
