@@ -1,0 +1,4 @@
+@import url("classic.css");
+div.related img {width: 32px}
+div.toctree-wrapper {display: none}
+dl.class>dt	{text-indent: -30px hanging; margin-left: 30px}

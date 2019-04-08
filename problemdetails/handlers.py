@@ -108,6 +108,14 @@ class ErrorWriter(web.RequestHandler):
 
     PROBLEM_DETAILS_MIME_TYPE = "application/problem+json"
 
+    json_encoder = json.JSONEncoder()
+    """Used to encode problem response documents.
+    
+    You set the attributes of this encoder to customize the creation
+    of problem documents.
+
+    """
+
     def write_error(self, status_code, **kwargs):
         """Render *application/problem+json* documents instead of HTML.
 
@@ -148,4 +156,4 @@ class ErrorWriter(web.RequestHandler):
                 pass
 
         self.set_header('Content-Type', self.PROBLEM_DETAILS_MIME_TYPE)
-        self.write(json.dumps(body).encode('utf-8'))
+        self.write(self.json_encoder.encode(body).encode('utf-8'))
