@@ -27,5 +27,6 @@ templates_path = ['templates']  # layout overrides
 
 intersphinx_mapping = {
     'https://docs.python.org/': None,
+    'https://python-jsonschema.readthedocs.io/en/stable': None,
     'https://www.tornadoweb.org/en/stable/': None,
 }

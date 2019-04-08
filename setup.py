@@ -35,6 +35,10 @@ setuptools.setup(
             'python-docs-theme==2018.7',
             'sphinx==2.0.0',
         ],
+        'examples': [
+            'jsonschema==3.0.1',
+            'pyyaml==5.1',
+        ],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

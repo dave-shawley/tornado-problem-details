@@ -4,6 +4,7 @@ Release History
 `Next Release`_
 ---------------
 - Make json encoder configurable.
+- Add example of using Open API and JSON schema validation together
 
 `0.0.5`_ (4 Apr 2019)
 ---------------------
