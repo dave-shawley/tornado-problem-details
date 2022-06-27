@@ -4,6 +4,7 @@ Release History
 `Next Release`_
 ---------------
 - Renamed primary branch to "main"
+- Drop Python 2.7 support
 
 `0.0.6`_ (8 Apr 2019)
 ---------------------
