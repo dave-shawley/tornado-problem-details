@@ -79,8 +79,7 @@ class ErrorWriterTests(testing.AsyncHTTPTestCase):
     def test_that_send_error_sets_type_to_rfc_url(self):
         response = self.send_query(status=500)
         body = json.loads(response.body.decode('utf-8'))
-        self.assertEqual(body['type'],
-                         handlers.type_link_map[response.code])
+        self.assertEqual(body['type'], handlers.type_link_map[response.code])
         self.assertEqual(body['type'],
                          'https://tools.ietf.org/html/rfc7231#section-6.6.1')
 
