@@ -23,6 +23,9 @@ class Handler(problemdetails.ErrorWriter, web.RequestHandler):
         raise_error = self.get_query_argument('raise_error', default=sentinel)
 
         if raise_error is not sentinel:
+            if raise_error == 'unhandled':
+                raise RuntimeError('unhandled exception')
+
             query_args = [
                 arg for arg in self.request.query_arguments.keys()
                 if arg not in ('raise_error', 'status')
@@ -79,8 +82,7 @@ class ErrorWriterTests(testing.AsyncHTTPTestCase):
     def test_that_send_error_sets_type_to_rfc_url(self):
         response = self.send_query(status=500)
         body = json.loads(response.body.decode('utf-8'))
-        self.assertEqual(body['type'],
-                         handlers.type_link_map[response.code])
+        self.assertEqual(body['type'], handlers.type_link_map[response.code])
         self.assertEqual(body['type'],
                          'https://tools.ietf.org/html/rfc7231#section-6.6.1')
 
@@ -123,13 +125,19 @@ class ErrorWriterTests(testing.AsyncHTTPTestCase):
         response = self.send_query()
         self.assertEqual(response.headers['Content-Type'], 'application/json')
 
+    def test_unhandled_exception(self):
+        response = self.send_query(raise_error='unhandled')
+        self.assertEqual(response.headers['Content-Type'],
+                         'application/problem+json')
+        self.assertEqual(500, response.code)
+
 
 class ProblemTests(ErrorWriterTests):
     def get_app(self):
         return Application()
 
     def send_query(self, **query):
-        query['raise_error'] = True
+        query.setdefault('raise_error', True)
         return self.fetch('/?{0}'.format(urlencode(query)))
 
     def test_that_custom_attributes_can_be_set(self):

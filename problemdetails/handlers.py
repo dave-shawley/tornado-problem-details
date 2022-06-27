@@ -110,7 +110,7 @@ class ErrorWriter(web.RequestHandler):
 
     json_encoder = json.JSONEncoder()
     """Used to encode problem response documents.
-    
+
     You set the attributes of this encoder to customize the creation
     of problem documents.
 

@@ -4,7 +4,7 @@ You can run any of the examples in this section by preparing a Python
 environment::
 
    $ python3 -mvenv env
-   $ env/bin/pip install -q '.[examples]'
+   $ env/bin/pip install -q '.[dev]'
    $ env/bin/python examples/httpbin.py
    D - asyncio: Using selector: KqueueSelector
    I - root: listening on http://127.0.0.1:8000 I - root: GET http://127.0.0.1:8000/?status=419
