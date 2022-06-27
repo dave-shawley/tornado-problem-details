@@ -47,15 +47,15 @@ since keyword parameters may be swallowed by intervening code.  The only
 parameters that are recognized are: ``instance``, ``title``, and ``type``.
 Use the exception-based interface for more substantial documents.
 
-.. |build| image:: https://img.shields.io/circleci/project/github/dave-shawley/tornado-problem-details/master.svg?style=social
-   :target: https://circleci.com/gh/dave-shawley/tornado-problem-details/tree/master
+.. |build| image:: https://img.shields.io/circleci/project/github/dave-shawley/tornado-problem-details/main.svg?style=social
+   :target: https://circleci.com/gh/dave-shawley/tornado-problem-details/tree/main
 .. |coverage| image:: https://img.shields.io/coveralls/github/dave-shawley/tornado-problem-details.svg?style=social
-   :target: https://coveralls.io/github/dave-shawley/tornado-problem-details?branch=master
+   :target: https://coveralls.io/github/dave-shawley/tornado-problem-details?branch=main
 .. |docs| image:: https://img.shields.io/readthedocs/tornado-problem-details.svg?style=social
    :target: https://tornado-problem-details.readthedocs.io/en/latest/?badge=latest
 .. |download| image:: https://img.shields.io/pypi/pyversions/tornado-problem-details.svg?style=social
    :target: https://pypi.org/project/tornado-problem-details/
 .. |license| image:: https://img.shields.io/pypi/l/tornado-problem-details.svg?style=social
-   :target: https://github.com/dave-shawley/tornado-problem-details/blob/master/LICENSE.txt
+   :target: https://github.com/dave-shawley/tornado-problem-details/blob/main/LICENSE.txt
 .. |source| image:: https://img.shields.io/badge/source-github.com-green.svg?style=social
    :target: https://github.com/dave-shawley/tornado-problem-details

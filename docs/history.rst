@@ -1,6 +1,10 @@
 Release History
 ===============
 
+`Next Release`_
+---------------
+- Renamed primary branch to "main"
+
 `0.0.6`_ (8 Apr 2019)
 ---------------------
 - Make json encoder configurable.
@@ -22,7 +26,7 @@ Release History
 ----------------------
 - Initial alpha release containing a very simple implementation.
 
-.. _Next Release: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.6...master
+.. _Next Release: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.6...main
 .. _0.0.6: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.5...0.0.6
 .. _0.0.5: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.4...0.0.5
 .. _0.0.4: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.2...0.0.4
