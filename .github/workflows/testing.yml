@@ -33,7 +33,7 @@ jobs:
           yapf -dr problemdetails tests.py
       - name: Run tests
         run: |
-          coverage run -m unittest tests.py
+          coverage run -m pytest tests.py
           coverage report
           coverage xml -o ./build/coverage.xml
       - name: Upload coverage
