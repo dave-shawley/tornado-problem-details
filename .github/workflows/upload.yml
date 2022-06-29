@@ -1,0 +1,29 @@
+name: Upload
+on:
+  push:
+    branches-ignore: ["*"]
+    tags: ["*"]
+
+jobs:
+  upload-package:
+    name: "Build & upload package"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags') && github.repository == 'dave-shawley/tornado-problem-details'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"  # build wheels compatible with 3.7 and newer
+      - name: Install builder
+        run: |
+          python -m pip install --upgrade build pip setuptools twine
+      - name: Build distributions
+        run: |
+          python -m build --sdist --wheel --outdir dist/ .
+      - name: Upload packages
+        uses: pypa/gh-action-pypi-publish@v1.4.2
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip_existing: true  # just in case...
