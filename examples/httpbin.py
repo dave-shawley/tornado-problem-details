@@ -7,16 +7,17 @@ document.  The example handler shows how to catch a HTTPError and
 transform it into a problemdetails.Problem.
 
 """
+import asyncio
 import logging
 import os
+import signal
 
-from tornado import gen, httpclient, ioloop, web
+from tornado import httpclient, web
 import problemdetails
 
 
 class HttpBinHandler(problemdetails.ErrorWriter, web.RequestHandler):
-    @gen.coroutine
-    def get(self):
+    async def get(self):
         logger = logging.getLogger('HttpBinHandler')
         url = 'http://httpbin.org/status/{0}'.format(
             self.get_query_argument('status', '500'))
@@ -24,7 +25,7 @@ class HttpBinHandler(problemdetails.ErrorWriter, web.RequestHandler):
 
         client = httpclient.AsyncHTTPClient()
         try:
-            response = yield client.fetch(url)
+            response = await client.fetch(url)
             self.add_header('Content-Type', 'application/json')
             self.write(response.body)
         except httpclient.HTTPError as error:
@@ -33,19 +34,23 @@ class HttpBinHandler(problemdetails.ErrorWriter, web.RequestHandler):
                 httpbin_headers=dict(error.response.headers.items()))
 
 
-if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.DEBUG, format='%(levelname)1.1s - %(name)s: %(message)s')
+async def main():
     app = web.Application([web.url('/', HttpBinHandler)], debug=True)
-
-    iol = ioloop.IOLoop.current()
     port = int(os.environ.get('PORT', '8000'))
     stem = 'http://127.0.0.1:{0}'.format(port)
-    logging.info('listening on %s', stem)
-    logging.info('GET %s/?status=418', stem)
-
     app.listen(address='127.0.0.1', port=port)
-    try:
-        iol.start()
-    except KeyboardInterrupt:
-        iol.stop()
+
+    logging.info('listening on %s', stem)
+    logging.info('try me at %s?status=500', stem)
+
+    event = asyncio.Event()
+    loop = asyncio.get_event_loop()
+    loop.add_signal_handler(signal.SIGINT, event.set)
+    loop.add_signal_handler(signal.SIGTERM, event.set)
+    await event.wait()
+
+
+if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.DEBUG, format='%(levelname)-8s %(name)s: %(message)s')
+    asyncio.run(main())

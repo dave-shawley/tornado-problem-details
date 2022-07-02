@@ -23,14 +23,16 @@ entity and transforms JSON schema validation errors into a readable error
 document.
 
 """
+import asyncio
 import cgi
 import copy
 import logging
 import json
 import os
+import signal
 import uuid
 
-from tornado import ioloop, web
+from tornado import web
 import jsonschema.exceptions
 import problemdetails
 import yaml
@@ -295,11 +297,7 @@ class OpenAPIHandler(problemdetails.ErrorWriter, web.RequestHandler):
         self.write(self.settings['json-encoder'].encode(doc))
 
 
-if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.DEBUG, format='%(levelname)1.1s %(name)s: %(message)s')
-    problemdetails.ErrorWriter.json_encoder.default = jsonify
-
+async def main():
     app = web.Application([
         web.url(r'/index.html', DocumentationHandler, name='docs'),
         web.url(r'/openapi.json', OpenAPIHandler, name='openapi'),
@@ -312,11 +310,22 @@ if __name__ == '__main__':
     app.settings['json-encoder'] = json.JSONEncoder(default=jsonify)
     app.settings['openapi'] = yaml.safe_load(OPENAPI_SCHEMA)
 
-    iol = ioloop.IOLoop.current()
-    port = int(os.environ.get('PORT', '8000'))
+    # Update the error writer's JSON encoder so that it knows
+    # how to handle validation errors
+    problemdetails.ErrorWriter.json_encoder.default = jsonify
 
+    port = int(os.environ.get('PORT', '8000'))
     app.listen(address='127.0.0.1', port=port)
-    try:
-        iol.start()
-    except KeyboardInterrupt:
-        iol.stop()
+
+    event = asyncio.Event()
+    loop = asyncio.get_event_loop()
+    loop.add_signal_handler(signal.SIGINT, event.set)
+    loop.add_signal_handler(signal.SIGTERM, event.set)
+    await event.wait()
+
+
+if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.DEBUG, format='%(levelname)1.1s %(name)s: %(message)s')
+
+    asyncio.run(main())
