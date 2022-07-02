@@ -1,11 +1,16 @@
-from tornado import httputil, web
+from __future__ import annotations
+
+import http.client
+import typing
+
+from tornado import web
 
 
 class Problem(web.HTTPError):
     """An exception that will be translated into a json document.
 
-    :param int status_code: HTTP status code to return
-    :param str log_message: optional log message that is passed
+    :param status_code: HTTP status code to return
+    :param log_message: optional log message that is passed
         to the :class:`tornado.web.HTTPError` initializer
     :param args: parameters that are passed to `log_message` in
         the :class:`~tornado.web.HTTPError` initializer.
@@ -28,9 +33,14 @@ class Problem(web.HTTPError):
 
     """
 
-    def __init__(self, status_code, log_message=None, *args, **kwargs):
-        if status_code not in httputil.responses:
-            kwargs.setdefault('reason', 'Abnormal Status')
+    def __init__(self,
+                 status_code: int,
+                 log_message: str | None = None,
+                 *args: typing.Any,
+                 **kwargs: typing.Any) -> None:
+        kwargs.setdefault(
+            'reason', http.client.responses.get(status_code,
+                                                'Abnormal Status'))
         super(Problem, self).__init__(status_code, log_message, *args,
                                       **kwargs)
         self.document = kwargs

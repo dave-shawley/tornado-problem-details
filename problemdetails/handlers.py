@@ -1,14 +1,18 @@
+from __future__ import annotations
+
 import json
+import typing
 
 from tornado import web
 
 from problemdetails import Problem
 
 
-def _rfc_link(rfc_no, anchor=None):
+def _rfc_link(rfc_no: int, anchor: str | None = None) -> str:
+    link = f'https://tools.ietf.org/html/rfc{rfc_no}'
     if anchor:
-        return 'https://tools.ietf.org/html/rfc{0}#{1}'.format(rfc_no, anchor)
-    return 'https://tools.ietf.org/html/rfc{0}'.format(rfc_no)
+        link += f'#{anchor}'
+    return link
 
 
 type_link_map = {
@@ -106,7 +110,7 @@ class ErrorWriter(web.RequestHandler):
 
     """
 
-    PROBLEM_DETAILS_MIME_TYPE = "application/problem+json"
+    PROBLEM_DETAILS_MIME_TYPE: str = "application/problem+json"
 
     json_encoder = json.JSONEncoder()
     """Used to encode problem response documents.
@@ -116,10 +120,10 @@ class ErrorWriter(web.RequestHandler):
 
     """
 
-    def write_error(self, status_code, **kwargs):
+    def write_error(self, status_code: int, **kwargs: typing.Any) -> None:
         """Render *application/problem+json* documents instead of HTML.
 
-        :param int status_code: HTTP status code that we returned
+        :param status_code: HTTP status code that we returned
         :keyword str detail: optional *detail* field to include in
             the error document.  This field is omitted by default.
         :keyword str instance: optional *instance* to include in the
