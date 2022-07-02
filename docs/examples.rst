@@ -4,10 +4,11 @@ You can run any of the examples in this section by preparing a Python
 environment::
 
    $ python3 -mvenv env
-   $ env/bin/pip install -q '.[dev]'
+   $ env/bin/pip install -q '.[examples]'
    $ env/bin/python examples/httpbin.py
-   D - asyncio: Using selector: KqueueSelector
-   I - root: listening on http://127.0.0.1:8000 I - root: GET http://127.0.0.1:8000/?status=419
+   DEBUG     asyncio: Using selector: KqueueSelector
+   INFO      root: listening on http://127.0.0.1:8000
+   INFO      root: try me at http://127.0.0.1:8000/?status=500
 
 The examples run the application in *debug mode* so changing the source
 code results in the application reloading immediately.  Feel free to
@@ -162,8 +163,8 @@ when the application is created.
 
 .. literalinclude:: ../examples/schemified.py
    :language: python
-   :lines: 298-
-   :emphasize-lines: 4
+   :pyobject: main
+   :emphasize-lines: 14-16
 
 .. _python-jsonschema: https://python-jsonschema.readthedocs.io/en/stable
    /errors/#best-match-and-relevance

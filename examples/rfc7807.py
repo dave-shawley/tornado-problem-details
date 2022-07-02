@@ -1,8 +1,10 @@
 """Pair of handlers that implement the examples from :rfc:`7807`."""
+import asyncio
 import logging
 import os
+import signal
 
-from tornado import ioloop, web
+from tornado import web
 import problemdetails
 
 
@@ -83,25 +85,32 @@ class ValidationError(problemdetails.ErrorWriter, web.RequestHandler):
         return None
 
 
-if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.DEBUG, format='%(levelname)1.1s - %(name)s: %(message)s')
+async def main():
+
     app = web.Application([
         web.url(r'/account/(?P<account>\d+)', AccountHandler,
                 name='account-handler'),
         web.url(r'/invalid-params', ValidationError),
     ], debug=True)
 
-    iol = ioloop.IOLoop.current()
     port = int(os.environ.get('PORT', '8000'))
     stem = 'http://127.0.0.1:{0}'.format(port)
+    app.listen(address='127.0.0.1', port=port)
+
     logging.info('listening on %s', stem)
+    logging.info('try the following:')
     logging.info('POST %s/account/1234?price=40', stem)
     logging.info('GET  %s/invalid-params', stem)
     logging.info('GET  %s/invalid-params?age=-10&color', stem)
 
-    app.listen(address='127.0.0.1', port=port)
-    try:
-        iol.start()
-    except KeyboardInterrupt:
-        iol.stop()
+    event = asyncio.Event()
+    loop = asyncio.get_event_loop()
+    loop.add_signal_handler(signal.SIGINT, event.set)
+    loop.add_signal_handler(signal.SIGTERM, event.set)
+    await event.wait()
+
+
+if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.DEBUG, format='%(levelname)1.1s - %(name)s: %(message)s')
+    asyncio.run(main())
