@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tornado-problem-details"
+version = "1.0.0"
+description = "RFC-7807 Error Documents for Tornado"
+readme = "README.rst"
+license = "BSD-3-Clause"
+license-files = { paths = ["LICENSE.txt"] }
+requires-python = ">=3.7"
+authors = [{ name = "Dave Shawley", email = "daveshawley@gmail.com"}]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+dependencies = [
+    "tornado>=6",
+]
+
+[optional-dependencies]
+examples = ["jsonschema", "pyyaml"]
+
+[project.urls]
+Homepage = "https://githib.com/dave-shawley/tornado-problem-details"
+
+[tool.hatch.envs.default]
+dependencies = [
+    "coverage",
+    "flake8",
+    "flake8-fixme",
+    "flake8-print",
+    "flake8-pyproject",
+    "pytest",
+    "python-docs-theme",
+    "readme-renderer",
+    "sphinx",
+    "twine",
+    "wheel",
+    "yapf==0.26.0",
+]
+
+[tool.hatch.envs.default.scripts]
+lint = [
+  "flake8 problemdetails tests.py",
+  "yapf -dr problemdetails tests.py",
+]
+test = [
+  "coverage run -m pytest tests.py",
+  "coverage report",
+  "coverage xml -o ./build/coverage.xml",
+]
+
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.coverage.run]
+branch = true
+source = ["problemdetails"]
+
+[tool.flake8]
+exclude = ["build", "dist", "env"]

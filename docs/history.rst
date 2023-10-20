@@ -1,6 +1,11 @@
 Release History
 ===============
 
+`Next Release`_
+---------------
+- Switch from setuptools to hatch/pyproject.toml
+- Drop Python 3.7 & 3.8 support
+
 `1.0.0`_ (2 Jul 2022)
 ---------------------
 - Renamed primary branch to "main"

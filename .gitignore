@@ -1,6 +1,9 @@
-build/
-dist/
-env/
-.coverage
+.*
+!/.github/
+!/.gitignore
+!/.readthedocs.yml
+/build/
+/dist/
+/env/
 *.egg-info
 *.pyc
