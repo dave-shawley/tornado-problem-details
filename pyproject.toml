@@ -34,7 +34,6 @@ examples = ["jsonschema", "pyyaml"]
 Homepage = "https://githib.com/dave-shawley/tornado-problem-details"
 
 [tool.hatch.envs.default]
-python = "3.11"
 dependencies = [
     "coverage",
     "flake8",
