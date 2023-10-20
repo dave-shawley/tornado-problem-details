@@ -1,6 +1,10 @@
 Release History
 ===============
 
+`Next Release`_
+---------------
+- Switch from setuptools to hatch/pyproject.toml
+
 `1.0.0`_ (2 Jul 2022)
 ---------------------
 - Renamed primary branch to "main"
