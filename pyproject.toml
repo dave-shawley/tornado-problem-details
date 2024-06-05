@@ -35,12 +35,12 @@ Homepage = "https://githib.com/dave-shawley/tornado-problem-details"
 
 [tool.hatch.envs.default]
 dependencies = [
-    "coverage",
+    "coverage[toml]",
     "flake8",
     "flake8-fixme",
     "flake8-print",
     "flake8-pyproject",
-    "pytest",
+    "pytest>8.1,<8.2",  # https://github.com/tornadoweb/tornado/pull/3382
     "python-docs-theme",
     "readme-renderer",
     "sphinx",
@@ -60,6 +60,8 @@ test = [
   "coverage xml -o ./build/coverage.xml",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["problemdetails"]
 
 [tool.coverage.report]
 show_missing = true
