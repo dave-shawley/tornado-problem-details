@@ -60,6 +60,8 @@ test = [
   "coverage xml -o ./build/coverage.xml",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["problemdetails"]
 
 [tool.coverage.report]
 show_missing = true
