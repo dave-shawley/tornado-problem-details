@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tornado-problem-details"
-version = "1.0.0"
+version = "1.1.0"
 description = "RFC-7807 Error Documents for Tornado"
 readme = "README.rst"
 license = "BSD-3-Clause"

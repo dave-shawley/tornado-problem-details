@@ -1,8 +1,8 @@
 Release History
 ===============
 
-`Next Release`_
----------------
+`1.1.0`_ (5 June 2024)
+----------------------
 - Switch from setuptools to hatch/pyproject.toml
 - Drop Python 3.7 & 3.8 support
 
@@ -35,7 +35,8 @@ Release History
 ----------------------
 - Initial alpha release containing a very simple implementation.
 
-.. _Next Release: https://github.com/dave-shawley/tornado-problem-details/compare/1.0.0...main
+.. _Next Release: https://github.com/dave-shawley/tornado-problem-details/compare/1.1.0...main
+.. _1.1.0: https://github.com/dave-shawley/tornado-problem-details/compare/1.0.0...1.1.0
 .. _1.0.0: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.6...1.0.0
 .. _0.0.6: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.5...0.0.6
 .. _0.0.5: https://github.com/dave-shawley/tornado-problem-details/compare/0.0.4...0.0.5
