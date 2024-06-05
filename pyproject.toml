@@ -35,7 +35,7 @@ Homepage = "https://githib.com/dave-shawley/tornado-problem-details"
 
 [tool.hatch.envs.default]
 dependencies = [
-    "coverage",
+    "coverage[toml]",
     "flake8",
     "flake8-fixme",
     "flake8-print",
